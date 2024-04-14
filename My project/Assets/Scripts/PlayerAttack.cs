@@ -24,12 +24,12 @@ public class PlayerAttack : MonoBehaviour
             switch (spriteRenderer.flipX)
             {
                 case true:
-                    RaycastHit2D ray_r = Physics2D.Raycast(transform.position, transform.right, range, enemyLayer);
+                    RaycastHit2D ray_r = Physics2D.Raycast(transform.position, -transform.right, range, enemyLayer);
                     if (ray_r)
                         EnemyHit(ray_r.transform.gameObject);
                     break;
                 case false:
-                    RaycastHit2D ray_l = Physics2D.Raycast(transform.position, -transform.right, range, enemyLayer);
+                    RaycastHit2D ray_l = Physics2D.Raycast(transform.position, transform.right, range, enemyLayer);
                     if (ray_l)
                         EnemyHit(ray_l.transform.gameObject);
                     break;
@@ -39,6 +39,6 @@ public class PlayerAttack : MonoBehaviour
 
     private void EnemyHit(GameObject enemy)
     {
-        // do something
+        enemy.GetComponent<EnemyMovement>().TakeDamage();
     }
 }

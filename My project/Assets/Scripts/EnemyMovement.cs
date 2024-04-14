@@ -34,7 +34,7 @@ public class EnemyMovement : MonoBehaviour
             dir *= -1;
     }
 
-    void TakeDamage()
+    public void TakeDamage()
     {
         if (damaged)
             return;
@@ -43,7 +43,7 @@ public class EnemyMovement : MonoBehaviour
 
         life--;
         if (life <= 0)
-            Destroy(this);
+            Destroy(this.gameObject);
     }
 
     private IEnumerator InvulnerableTime()

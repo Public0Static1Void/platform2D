@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask ground_layer;
     private bool canJump;
 
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         if (instance == null)
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -50,7 +53,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if (con.performed && canJump)
         {
+            if (transform.parent != null)
+                transform.parent = null;
+
             rb.AddForce(transform.up * jump_force, ForceMode2D.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("DyPlatform"))
+        {
+            transform.SetParent(other.transform, true);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("DyPlatform"))
+        {
+            transform.parent = null;
         }
     }
 }
