@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance {  get; private set; }
+
     private Rigidbody2D rb;
     [Header("X movement")]
     [SerializeField] private float speed;
@@ -13,6 +15,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jump_detection_range;
     [SerializeField] private LayerMask ground_layer;
     private bool canJump;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
+    }
 
     void Start()
     {
