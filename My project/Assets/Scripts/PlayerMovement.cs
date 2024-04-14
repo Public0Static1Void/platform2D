@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private bool canJump;
 
     private SpriteRenderer spriteRenderer;
+    private Animator anim;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -40,6 +42,14 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         else
             canJump = false;
+
+        if (rb.velocity.x >= 0)
+            anim.SetFloat("x_velocity", rb.velocity.x);
+        else
+            anim.SetFloat("x_velocity", -rb.velocity.x);
+
+        anim.SetFloat("y_velocity", rb.velocity.y);
+        anim.SetBool("grounded", canJump);
     }
 
     public void Move(InputAction.CallbackContext con)
@@ -47,6 +57,11 @@ public class PlayerMovement : MonoBehaviour
         float dir_x = con.ReadValue<Vector2>().x;
 
         rb.velocity = new Vector2(dir_x * speed, rb.velocity.y);
+
+        if (rb.velocity.x < 0)
+            spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
     }
 
     public void Jump(InputAction.CallbackContext con)
